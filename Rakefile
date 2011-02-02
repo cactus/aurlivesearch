@@ -33,16 +33,17 @@ task :compile => ["compile:slim", "compile:coffee", "compile:less", "compile:htm
 namespace "compile" do
     desc "create dist dir if it doesn't exist"
     task :dist_dir do
-        if not File.directory?('dist/')
-            mkdir "dist/"
+        if not (File.directory? 'dist' and File.directory? 'dist/static')
+            mkdir_p "dist/static/"
         end
     end
 
     desc "clean dist dir"
     task :clean do
-        rm Dir.glob('dist/*')
+        if File.directory? 'dist'
+            rm_rf 'dist'
+        end
     end
-    task :clean => 'compile:dist_dir'
 
     desc "compmile coffee scripts to js"
     task :coffee do
@@ -60,9 +61,7 @@ namespace "compile" do
    
     desc "copy static files to dist"
     task :html do
-        Dir.glob("src/*.html").each {|f| cp f, 'dist/' }
-        Dir.glob("src/*.js").each   {|f| cp f, 'dist/' }
-        Dir.glob("src/*.css").each  {|f| cp f, 'dist/' }
+        Dir.glob("src/static/*").each {|f| cp f, 'dist/static/' }
     end
     task :html => 'compile:dist_dir'
 
@@ -98,7 +97,7 @@ namespace "deploy" do
     desc "deploy to production env"
     task :prod do
         abort "'PROD_HOST' is not set. Not deploying." unless ENV['PROD_HOST'] 
-        sh "rsync -avz --delete-after dist/ #{ENV['PROD_HOST']}:/srv/www/oogah/"
+        sh "rsync -avz --delete-after dist/ #{ENV['PROD_HOST']}:/srv/www/aurlivesearch/"
     end
     task :prod => "compile"
 end
