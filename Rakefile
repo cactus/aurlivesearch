@@ -95,9 +95,9 @@ end
 
 namespace "deploy" do
     # failsafe
-    ENV['PROD_HOST'] ||= '0.0.0.0'
     desc "deploy to production env"
     task :prod do
+        abort "'PROD_HOST' is not set. Not deploying." unless ENV['PROD_HOST'] 
         sh "rsync -avz --delete-after dist/ #{ENV['PROD_HOST']}:/srv/www/oogah/"
     end
     task :prod => "compile"
