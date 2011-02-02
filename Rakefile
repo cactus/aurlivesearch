@@ -33,8 +33,11 @@ task :compile => ["compile:slim", "compile:coffee", "compile:less", "compile:htm
 namespace "compile" do
     desc "create dist dir if it doesn't exist"
     task :dist_dir do
-        if not (File.directory? 'dist' and File.directory? 'dist/static')
-            mkdir_p "dist/static/"
+        if not File.directory? 'dist/static'
+            mkdir_p "dist/static"
+        end
+        if not File.directory? 'dist/compiled'
+            mkdir_p "dist/compiled"
         end
     end
 
@@ -48,14 +51,14 @@ namespace "compile" do
     desc "compmile coffee scripts to js"
     task :coffee do
         ## coffee compiler outputs compiled js in same location as src
-        sh "coffee -o dist/ -c src/"
+        sh "coffee -o dist/compiled -c src/compiled"
     end
     task :coffee => 'compile:dist_dir'
 
     desc "watch-compile coffee scripts to js"
     task :coffee_watch do
         # same as coffee:compile, but also add watch
-        exec "coffee -w -o dist/ -c src/"
+        exec "coffee -w -o dist/compiled/ -c src/"
     end
     task :coffee_watch => 'compile:dist_dir'
    
@@ -67,8 +70,8 @@ namespace "compile" do
 
     desc "compile less scripts to css"
     task :less do
-        Dir.glob('src/*.less').each do |lf|
-            outfile = File.join('dist', File.basename(lf).sub('.less', '.css'))
+        Dir.glob('src/compiled/*.less').each do |lf|
+            outfile = File.join('dist', 'compiled', File.basename(lf).sub('.less', '.css'))
             sh "lessc #{lf} #{outfile}"
         end
     end
@@ -85,7 +88,7 @@ namespace "compile" do
 
     desc "uglify.js"
     task :uglify do
-        Dir.glob('dist/*.js').each do |lf|
+        Dir.glob('dist/compiled/*.js').each do |lf|
             sh "uglifyjs --overwrite #{lf}"
         end
     end
