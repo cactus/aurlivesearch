@@ -60,9 +60,9 @@ namespace "compile" do
    
     desc "copy static files to dist"
     task :html do
-        cp Dir.glob("src/*.html"), 'dist'
-        cp Dir.glob("src/*.js"), 'dist'
-        cp Dir.glob("src/*.css"), 'dist'
+        Dir.glob("src/*.html").each {|f| cp f, 'dist/' }
+        Dir.glob("src/*.js").each   {|f| cp f, 'dist/' }
+        Dir.glob("src/*.css").each  {|f| cp f, 'dist/' }
     end
     task :html => 'compile:dist_dir'
 
