@@ -7,27 +7,20 @@ aurlivesearch is an ajaxy live-search implementation for the [aur-rpc][1] api.
 aurlivesearch uses the following:
 
 -   ruby
-
-    -   rake
+    -   rake  
         This is used to automate building and deploying.
-
-    -   [slim][2]
+    -   [slim][2]  
         This is used to build the html from .slim templates.
-
--   [coffeescript][3]
+-   [coffeescript][3]  
     This is used to compile from coffeescript to javascript during building.
-
--   [uglifyjs][4]
+-   [uglifyjs][4]  
     This is used to compress the javascript during building.
-
--   [less][5]
+-   [less][5]  
     This is used to compile the less css template language to css during
     building.
-
--   [ICanHas.js][6]
+-   [ICanHas.js][6]  
     Javascript templating language that utilizes [mustache.js][7].
-
--   [jQuery][8]
+-   [jQuery][8]  
     Javascript library.
 
 # License
@@ -37,16 +30,23 @@ information.
 
 Directly Linked/Included libraries:
 
--   jQuery: [MIT License][10]
--   mustache.js: [MIT License][11]
--   ICanHaz.js: [MIT License][15]
+-   jQuery:  
+    [MIT License][10]
+-   mustache.js:  
+    [MIT License][11]
+-   ICanHaz.js:  
+    [MIT License][15]
 
 Used as compilers:
 
--   lesscss: [Apache-2.0 license][9]
--   slim: [MIT License][12]
--   coffee-script: [MIT License][13]
--   UglifyJS: [BSD License][14]
+-   lesscss:  
+    [Apache-2.0 license][9]
+-   slim:  
+    [MIT License][12]
+-   coffee-script:  
+    [MIT License][13]
+-   UglifyJS:  
+    [BSD License][14]
 
 
 [1]: http://aur.archlinux.org/rpc.php
