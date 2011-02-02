@@ -1,0 +1,66 @@
+# aurlivesearch
+
+aurlivesearch is an ajaxy live-search implementation for the [aur-rpc][1] api.
+
+# Requirements
+
+aurlivesearch uses the following:
+
+-   ruby
+
+    -   rake
+        This is used to automate building and deploying.
+
+    -   [slim][2]
+        This is used to build the html from .slim templates.
+
+-   [coffeescript][3]
+    This is used to compile from coffeescript to javascript during building.
+
+-   [uglifyjs][4]
+    This is used to compress the javascript during building.
+
+-   [less][5]
+    This is used to compile the less css template language to css during
+    building.
+
+-   [ICanHas.js][6]
+    Javascript templating language that utilizes [mustache.js][7].
+
+-   [jQuery][8]
+    Javascript library.
+
+# License
+
+aurlivesearch itself is licensed under the MIT license. See LICENSE for more
+information.
+
+Directly Linked/Included libraries:
+
+-   jQuery: [MIT License][10]
+-   mustache.js: [MIT License][11]
+-   ICanHaz.js: [MIT License][15]
+
+Used as compilers:
+
+-   lesscss: [Apache-2.0 license][9]
+-   slim: [MIT License][12]
+-   coffee-script: [MIT License][13]
+-   UglifyJS: [BSD License][14]
+
+
+[1]: http://aur.archlinux.org/rpc.php
+[2]: http://slim-lang.com/
+[3]: http://jashkenas.github.com/coffee-script/
+[4]: https://github.com/mishoo/UglifyJS
+[5]: http://lesscss.org/
+[6]: http://icanhazjs.com/
+[7]: https://github.com/janl/mustache.js
+[8]: http://jquery.com/
+[9]: https://github.com/cloudhead/less.js/blob/master/LICENSE
+[10]: http://jquery.org/license
+[11]: https://github.com/janl/mustache.js/blob/master/LICENSE
+[12]: https://github.com/stonean/slim/blob/master/MIT-LICENSE
+[13]: https://github.com/jashkenas/coffee-script/blob/master/LICENSE
+[14]: https://github.com/mishoo/UglifyJS
+[15]: https://github.com/andyet/ICanHaz.js/blob/master/LICENSE

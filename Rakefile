@@ -1,4 +1,4 @@
-# Copyright (c) 2010 github.com/cactus
+# Copyright (c) 2011 github.com/cactus
 # 
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -29,7 +29,7 @@ ROOT_D = File.dirname(__FILE__)
 ###
 ### Compile tasks for coffee and less
 desc "Compile coffee scripts and less css files"
-task :compile => ["compile:coffee", "compile:less", "compile:html", "compile:uglify"]
+task :compile => ["compile:slim", "compile:coffee", "compile:less", "compile:html", "compile:uglify"]
 
 namespace "compile" do
     desc "clean dist dir"
@@ -61,6 +61,14 @@ namespace "compile" do
         Dir.glob('src/*.less').each do |lf|
             outfile = File.join('dist', File.basename(lf).sub('.less', '.css'))
             sh "lessc #{lf} #{outfile}"
+        end
+    end
+
+    desc "compile slim html template"
+    task :slim do
+        Dir.glob('src/*.slim').each do |lf|
+            outfile = File.join('dist', File.basename(lf).sub('.slim', '.html'))
+            sh "slimrb -p #{lf} > #{outfile}"
         end
     end
 
