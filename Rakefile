@@ -22,7 +22,6 @@
 require "rubygems"
 require "bundler/setup"
 require 'rake'
-require 'digest/md5'
 
 ROOT_D = File.dirname(__FILE__)
 
@@ -32,22 +31,32 @@ desc "Compile coffee scripts and less css files"
 task :compile => ["compile:slim", "compile:coffee", "compile:less", "compile:html", "compile:uglify"]
 
 namespace "compile" do
+    desc "create dist dir if it doesn't exist"
+    task :dist_dir do
+        if not File.directory?('dist/')
+            mkdir "dist/"
+        end
+    end
+
     desc "clean dist dir"
     task :clean do
         rm Dir.glob('dist/*')
     end
+    task :clean => 'compile:dist_dir'
 
     desc "compmile coffee scripts to js"
     task :coffee do
         ## coffee compiler outputs compiled js in same location as src
         sh "coffee -o dist/ -c src/"
     end
+    task :coffee => 'compile:dist_dir'
 
     desc "watch-compile coffee scripts to js"
     task :coffee_watch do
         # same as coffee:compile, but also add watch
         exec "coffee -w -o dist/ -c src/"
     end
+    task :coffee_watch => 'compile:dist_dir'
    
     desc "copy static files to dist"
     task :html do
@@ -55,6 +64,7 @@ namespace "compile" do
         cp Dir.glob("src/*.js"), 'dist'
         cp Dir.glob("src/*.css"), 'dist'
     end
+    task :html => 'compile:dist_dir'
 
     desc "compile less scripts to css"
     task :less do
@@ -63,6 +73,7 @@ namespace "compile" do
             sh "lessc #{lf} #{outfile}"
         end
     end
+    task :less => 'compile:dist_dir'
 
     desc "compile slim html template"
     task :slim do
@@ -71,6 +82,7 @@ namespace "compile" do
             sh "slimrb -p #{lf} > #{outfile}"
         end
     end
+    task :slim => 'compile:dist_dir'
 
     desc "uglify.js"
     task :uglify do
@@ -78,6 +90,7 @@ namespace "compile" do
             sh "uglifyjs --overwrite #{lf}"
         end
     end
+    task :uglify => 'compile:dist_dir'
 end
 
 namespace "deploy" do
