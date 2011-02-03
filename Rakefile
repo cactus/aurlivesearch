@@ -100,7 +100,7 @@ namespace "deploy" do
     desc "deploy to production env"
     task :prod do
         abort "'PROD_HOST' is not set. Not deploying." unless ENV['PROD_HOST'] 
-        sh "rsync -avz --delete-after dist/ #{ENV['PROD_HOST']}:/srv/www/aurlivesearch/"
+        sh "rsync -avz --delete-after --exclude='/error' dist/ #{ENV['PROD_HOST']}:/srv/www/aurlivesearch/"
     end
     task :prod => "compile"
 end
