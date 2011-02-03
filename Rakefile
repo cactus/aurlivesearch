@@ -58,7 +58,7 @@ namespace "compile" do
     desc "watch-compile coffee scripts to js"
     task :coffee_watch do
         # same as coffee:compile, but also add watch
-        exec "coffee -w -o dist/compiled/ -c src/"
+        exec "coffee -w -o dist/compiled -c src/compiled"
     end
     task :coffee_watch => 'compile:dist_dir'
    
