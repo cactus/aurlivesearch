@@ -22,6 +22,8 @@ aurlivesearch uses the following:
     Javascript templating language that utilizes [mustache.js][7].
 -   [jQuery][8]  
     Javascript library.
+-   [Blueprint.css][17]  
+    CSS Template
 
 # License
 
@@ -36,6 +38,8 @@ Directly Linked/Included libraries:
     [MIT License][11]
 -   ICanHaz.js:  
     [MIT License][15]
+-   Blueprint.css:
+    [MIT License][16]
 
 Used as compilers:
 
@@ -64,3 +68,5 @@ Used as compilers:
 [13]: https://github.com/jashkenas/coffee-script/blob/master/LICENSE
 [14]: https://github.com/mishoo/UglifyJS
 [15]: https://github.com/andyet/ICanHaz.js/blob/master/LICENSE
+[16]: https://github.com/joshuaclayton/blueprint-css/blob/master/LICENSE
+[17]: http://www.blueprintcss.org/

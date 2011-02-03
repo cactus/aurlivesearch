@@ -64,7 +64,7 @@ namespace "compile" do
    
     desc "copy static files to dist"
     task :html do
-        Dir.glob("src/static/*").each {|f| cp f, 'dist/static/' }
+        cp_r Dir.glob("src/static/*"), 'dist/static/'
     end
     task :html => 'compile:dist_dir'
 

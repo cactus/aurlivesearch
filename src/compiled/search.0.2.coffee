@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 qurl = 'http://aur.archlinux.org/rpc.php?callback=?'
+
 doajaxy = () ->
     $('#response').empty()
     $('#counter span').empty().text(0)
