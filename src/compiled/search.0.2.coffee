@@ -51,7 +51,7 @@ doajaxy = () ->
 
 ajaxy_firing_pin = (callable, delay) =>
     # have to use css here, because show does display: block
-    $('#ajax-loading').css('display', 'inline')
+    $('#ajax-loading').fadeIn()
     # only fire callable once every X timeperiod
     clearTimeout(@ajaxy_timeout)
     @ajaxy_timeout = setTimeout(callable, delay)
