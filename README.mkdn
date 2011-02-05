@@ -35,7 +35,7 @@ Directly Linked/Included libraries:
     [MIT License][11]
 -   ICanHaz.js:  
     [MIT License][15]
--   Blueprint.css:
+-   Blueprint.css:  
     [MIT License][16]
 
 Used as compilers:
