@@ -9,20 +9,19 @@
     /[if IE]
       %link(href="/static/blueprint/ie.css" rel="stylesheet" 
             type="text/css" media="screen, projection")
-    %link(href="/compiled/screen.0.2.css" rel="stylesheet" type="text/css")
+    %link(href="/compiled/screen.0.3.css" rel="stylesheet" type="text/css")
     %script#packages_tpl(type="text/html")
       :plain
-        <ul>{{#packages}}<li>{{#pkg}}
-        {{Name}}:
-        <ul>
-          <li>version: {{Version}}</li>
-          <li>pkgid: {{ID}}</li>
-          <li>votes: {{NumVotes}}</li>
-          <li>url: <a href="{{URL}}">{{URL}}</a></li>
-          <li>aur-tarball: <a href="http://aur.archlinux.org{{URLPath}}">{{URLPath}}</a></li>
-          <li>description: {{Description}}</li>
-        </ul><br>
-        {{/pkg}}</li>{{/packages}}</ul>
+        {{#packages}}{{#pkg}}
+        <tr>
+          <td><a href="http://aur.archlinux.org/packages.php?ID={{ID}}">{{ID}}</a></td>
+          <td><a href="{{URL}}">{{Name}}</a></td>
+          <td>{{Version}}</td>
+          <td>{{NumVotes}}</td>
+          <td><a href="http://aur.archlinux.org{{URLPath}}">tarball</a></td>
+          <td>{{Description}}</td>
+        </tr>
+        {{/pkg}}{{/packages}}
     %script#error_tpl(type="text/html")
       :plain
         <div id="error">{{short_msg}}<br>{{long_msg}}</div>
@@ -42,6 +41,17 @@
         %a.quiet(href="https://github.com/cactus/aurlivesearch") about
       %hr.space
       #response.span-24.last
+        %table
+          %thead
+            %tr
+              %th ID
+              %th Name
+              %th Version
+              %th Votes
+              %th Tarball
+              %th Description
+          %tbody#results
+      #footer.error.span-24.last
     %script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js" type="text/javascript")
     %script(src="/static/ICanHaz.min.js" type="text/javascript")
-    %script(src="/compiled/search.0.2.js" type="text/javascript")
+    %script(src="/compiled/search.0.3.js" type="text/javascript")
