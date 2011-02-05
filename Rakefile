@@ -26,9 +26,14 @@ require 'rake'
 ROOT_D = File.dirname(__FILE__)
 
 ###
-### Compile tasks for coffee and less
-desc "Compile coffee scripts and less css files"
-task :compile => ["compile:slim", "compile:coffee", "compile:less", "compile:html", "compile:uglify"]
+### Compile tasks for coffee and scss
+desc "Compile coffee scripts and scss css files"
+task :compile => [
+    "compile:haml", 
+    "compile:coffee",
+    "compile:scss",
+    "compile:html",
+    "compile:uglify"]
 
 namespace "compile" do
     desc "create dist dir if it doesn't exist"
@@ -68,23 +73,25 @@ namespace "compile" do
     end
     task :html => 'compile:dist_dir'
 
-    desc "compile less scripts to css"
-    task :less do
-        Dir.glob('src/compiled/*.less').each do |lf|
-            outfile = File.join('dist', 'compiled', File.basename(lf).sub('.less', '.css'))
-            sh "lessc #{lf} #{outfile}"
+    desc "compile scss scripts to css"
+    task :scss do
+        Dir.glob('src/compiled/*.scss').each do |lf|
+            outfile = File.join('dist', 'compiled', 
+                File.basename(lf).sub('.scss', '.css'))
+            sh "sass --scss --no-cache --update #{lf} #{outfile}"
         end
     end
     task :less => 'compile:dist_dir'
 
-    desc "compile slim html template"
-    task :slim do
-        Dir.glob('src/*.slim').each do |lf|
-            outfile = File.join('dist', File.basename(lf).sub('.slim', '.html'))
-            sh "slimrb -p #{lf} > #{outfile}"
+    desc "compile haml html template"
+    task :haml do
+        Dir.glob('src/*.haml').each do |lf|
+            outfile = File.join('dist', 
+                File.basename(lf).sub('.haml', '.html'))
+            sh "haml -q -f html5 -e #{lf} #{outfile}"
         end
     end
-    task :slim => 'compile:dist_dir'
+    task :haml => 'compile:dist_dir'
 
     desc "uglify.js"
     task :uglify do
@@ -100,7 +107,7 @@ namespace "deploy" do
     desc "deploy to production env"
     task :prod do
         abort "'PROD_HOST' is not set. Not deploying." unless ENV['PROD_HOST'] 
-        sh "rsync -avz --delete-after --exclude='/error' --exclude='/robots.txt' dist/ #{ENV['PROD_HOST']}:/srv/www/aurlivesearch/"
+        sh "rsync -avzc --delete-after --exclude='/error' --exclude='/robots.txt' dist/ #{ENV['PROD_HOST']}:/srv/www/aurlivesearch/"
     end
     task :prod => "compile"
 end
