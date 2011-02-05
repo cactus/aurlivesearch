@@ -78,7 +78,7 @@ namespace "compile" do
         Dir.glob('src/compiled/*.scss').each do |lf|
             outfile = File.join('dist', 'compiled', 
                 File.basename(lf).sub('.scss', '.css'))
-            sh "sass --scss --no-cache --update #{lf} #{outfile}"
+            sh "sass --scss --no-cache --update #{lf}:#{outfile}"
         end
     end
     task :less => 'compile:dist_dir'
