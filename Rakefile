@@ -32,8 +32,8 @@ task :compile => [
     "compile:haml", 
     "compile:coffee",
     "compile:scss",
-    "compile:html",
-    "compile:uglify"]
+    "compile:html"]
+    #"compile:uglify"]
 
 namespace "compile" do
     desc "create dist dir if it doesn't exist"

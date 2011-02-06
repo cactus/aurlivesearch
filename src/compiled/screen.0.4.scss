@@ -1,18 +1,18 @@
-#error {
-  text-align: center;
-}
 #links {
   text-align: right;
 }
+
 #result-count {
   font-weight: bold;
 }
+
 #ajax-loading {
   position: relative;
   left: -25px;
   top: 5px;
   display: none;
 }
+
 #footer {
   position: absolute;
   bottom: 0;
@@ -20,4 +20,7 @@
   font-weight: bold;
   display: none;
   font-size: larger;
+  text-align: center;
 }
+
+.outofdate-1 { color: red; }

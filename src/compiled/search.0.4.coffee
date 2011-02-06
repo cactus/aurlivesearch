@@ -31,7 +31,7 @@ doajaxy = () ->
             long_msg: "must be at least 3 characters" 
         }
         $('#ajax-loading').fadeOut()
-        $('#footer').empty().append(ich.error_tpl(err_msg)).fadeIn()
+        $('#footer').append(ich.error_tpl(err_msg)).fadeIn()
         return false
     submit_data = { "type": "search", "arg": $('#q').val() }
     $.getJSON(qurl, submit_data, (data, txtStatus, req) ->
