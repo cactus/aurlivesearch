@@ -25,6 +25,8 @@ require 'rake'
 
 ROOT_D = File.dirname(__FILE__)
 
+task :default => :compile
+
 ###
 ### Compile tasks for coffee and scss
 desc "Compile coffee scripts and scss css files"
@@ -32,8 +34,8 @@ task :compile => [
     "compile:haml", 
     "compile:coffee",
     "compile:scss",
-    "compile:html"]
-    #"compile:uglify"]
+    "compile:html",
+    "compile:uglify"]
 
 namespace "compile" do
     desc "create dist dir if it doesn't exist"
@@ -107,7 +109,7 @@ namespace "deploy" do
     desc "deploy to production env"
     task :prod do
         abort "'PROD_HOST' is not set. Not deploying." unless ENV['PROD_HOST'] 
-        sh "rsync -avzc --delete-after --exclude='/error' --exclude='/robots.txt' dist/ #{ENV['PROD_HOST']}:/srv/www/aurlivesearch/"
+        sh "rsync -avzc --delete-after dist/ #{ENV['PROD_HOST']}:/srv/www/aurlivesearch/"
     end
     task :prod => ["compile:clean", "compile"]
 end
