@@ -119,3 +119,18 @@ task :deploy do
     sh "rsync -avzc --delete-after dist/ #{prod_host_loc}"
 end
 task :deploy => ["compile:clean", "compile"]
+
+desc "server locally for testing"
+task :serve do
+    require 'webrick'
+    include WEBrick
+    s = HTTPServer.new(
+        :Port => 8000,
+        :BindAddress => '127.0.0.1',
+        :DocumentRoot => 'dist/'
+    )
+    trap("INT") { s.shutdown }
+    puts "Starting server at http://127.0.0.1:8000/"
+    s.start
+end
+task :serve => ["compile:clean", "compile"]
