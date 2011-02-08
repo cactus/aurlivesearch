@@ -22,6 +22,7 @@
 require "rubygems"
 require "bundler/setup"
 require 'rake'
+require 'yaml'
 
 ROOT_D = File.dirname(__FILE__)
 
@@ -104,12 +105,17 @@ namespace "compile" do
     task :uglify => 'compile:dist_dir'
 end
 
-namespace "deploy" do
-    # failsafe
-    desc "deploy to production env"
-    task :prod do
-        abort "'PROD_HOST' is not set. Not deploying." unless ENV['PROD_HOST'] 
-        sh "rsync -avzc --delete-after dist/ #{ENV['PROD_HOST']}:/srv/www/aurlivesearch/"
+desc "deploy to production env"
+task :deploy do
+    if File.exists? '.config.yml'
+        #try to read from file
+        conf = File.read('.config.yml')
+        prod_host_loc = YAML.load(conf)['prod_host_loc']
+    else
+        #try to read from env
+        prod_host_loc = ENV['PROD_HOST_LOC']
     end
-    task :prod => ["compile:clean", "compile"]
+    abort "'prod_host_loc' is not set. Not deploying." unless prod_host_loc
+    sh "rsync -avzc --delete-after dist/ #{prod_host_loc}"
 end
+task :deploy => ["compile:clean", "compile"]
