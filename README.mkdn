@@ -9,7 +9,7 @@ aurlivesearch uses the following:
 -   ruby
     -   rake  
         This is used to automate building and deploying.
-    -   [haml][5]
+    -   [haml][5]  
         This is used to compile the html.
 -   [coffeescript][3]  
     This is used to compile from coffeescript to javascript during building.
