@@ -29,12 +29,11 @@ ROOT_D = File.dirname(__FILE__)
 task :default => :compile
 
 ###
-### Compile tasks for coffee and scss
-desc "Compile coffee scripts and scss css files"
+### Compile tasks for coffee
+desc "Compile coffee scripts"
 task :compile => [
     "compile:haml", 
     "compile:coffee",
-    "compile:scss",
     "compile:html",
     "compile:uglify"]
 
@@ -75,16 +74,6 @@ namespace "compile" do
         cp_r Dir.glob("src/static/*"), 'dist/static/'
     end
     task :html => 'compile:dist_dir'
-
-    desc "compile scss scripts to css"
-    task :scss do
-        Dir.glob('src/compiled/*.scss').each do |lf|
-            outfile = File.join('dist', 'compiled', 
-                File.basename(lf).sub('.scss', '.css'))
-            sh "sass --scss --no-cache --update #{lf}:#{outfile}"
-        end
-    end
-    task :less => 'compile:dist_dir'
 
     desc "compile haml html template"
     task :haml do
