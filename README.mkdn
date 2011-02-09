@@ -43,7 +43,7 @@ Directly Linked/Included libraries:
 
 Used as compilers:
 
--   haml/sass:  
+-   haml:  
     [MIT License][12]
 -   coffee-script:  
     [MIT License][13]
