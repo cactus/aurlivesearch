@@ -53,46 +53,43 @@ task :compile => [ "compile:haml", "compile:coffee",
 
 namespace "compile" do
     desc "compile coffee-script to js"
-    task :coffee do
+    task :coffee => [:mk_dist_dir] do
         ## coffee compiler outputs compiled js in same location as src
         sh "coffee -l -o dist/compiled -c src/compiled"
     end
-    task :coffee => :mk_dist_dir
 
     desc "watch-compile coffee-script to js"
-    task :coffee_watch do
+    task :coffee_watch => [:mk_dist_dir] do
         # same as coffee:compile, but also add watch
         exec "coffee -l -w -o dist/compiled -c src/compiled"
     end
-    task :coffee_watch => :mk_dist_dir
    
     desc "copy static files to dist"
-    task :static do
+    task :static => [:mk_dist_dir] do
         cp_r Dir.glob("src/static/*"), 'dist/static/'
     end
-    task :static => :mk_dist_dir
 
     desc "compile haml to html"
-    task :haml do
+    task :haml => [:mk_dist_dir] do
         Dir.glob('src/*.haml').each do |lf|
             outfile = File.join('dist', 
                 File.basename(lf).sub('.haml', '.html'))
             sh "haml -q -f html5 -e #{lf} #{outfile}"
         end
     end
-    task :haml => :mk_dist_dir
 
     desc "compress js with uglify.js"
-    task :uglify do
+    task :uglify => [:mk_dist_dir] do
         Dir.glob('dist/compiled/*.js').each do |lf|
             sh "uglifyjs --overwrite #{lf}"
         end
     end
-    task :uglify => :mk_dist_dir
 end
 
 desc "deploy to production env"
-task :deploy do
+task :deploy, [:dry_run] => [:clean, :compile] do |t, args|
+    args.with_defaults(:dry_run => false)
+    rsync_extra_args = args.dry_run ? '-n' : ''
     if File.exists? '.config.yml'
         #try to read from file
         conf = File.read('.config.yml')
@@ -102,12 +99,11 @@ task :deploy do
         prod_host_loc = ENV['PROD_HOST_LOC']
     end
     abort "'prod_host_loc' is not set. Not deploying." unless prod_host_loc
-    sh "rsync -avzc --delete-after dist/ #{prod_host_loc}"
+    sh "rsync #{rsync_extra_args} -avzc --delete-after dist/ #{prod_host_loc}"
 end
-task :deploy => [:clean, :compile]
 
 desc "server locally for testing"
-task :serve do
+task :serve => [:clean, :compile] do
     require 'webrick'
     include WEBrick
     s = HTTPServer.new(
@@ -126,4 +122,3 @@ task :serve do
     puts "Starting server at http://127.0.0.1:8000/"
     s.start
 end
-task :serve => [:clean, :compile]
