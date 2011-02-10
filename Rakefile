@@ -28,54 +28,51 @@ ROOT_D = File.dirname(__FILE__)
 
 task :default => :compile
 
+desc "clean dist dir"
+task :clean do
+    if File.directory? 'dist'
+        rm_rf 'dist'
+    end
+end
+    
+# no desc, hide from rake -T
+task :mk_dist_dir do
+    if not File.directory? 'dist/static'
+        mkdir_p "dist/static"
+    end
+    if not File.directory? 'dist/compiled'
+        mkdir_p "dist/compiled"
+    end
+end
+
 ###
 ### Compile tasks for coffee
-desc "Compile coffee scripts"
-task :compile => [
-    "compile:haml", 
-    "compile:coffee",
-    "compile:html",
-    "compile:uglify"]
+desc "Compile action"
+task :compile => [ "compile:haml", "compile:coffee",
+                   "compile:static", "compile:uglify"]
 
 namespace "compile" do
-    desc "create dist dir if it doesn't exist"
-    task :dist_dir do
-        if not File.directory? 'dist/static'
-            mkdir_p "dist/static"
-        end
-        if not File.directory? 'dist/compiled'
-            mkdir_p "dist/compiled"
-        end
-    end
-
-    desc "clean dist dir"
-    task :clean do
-        if File.directory? 'dist'
-            rm_rf 'dist'
-        end
-    end
-
-    desc "compmile coffee scripts to js"
+    desc "compile coffee-script to js"
     task :coffee do
         ## coffee compiler outputs compiled js in same location as src
         sh "coffee -l -o dist/compiled -c src/compiled"
     end
-    task :coffee => 'compile:dist_dir'
+    task :coffee => :mk_dist_dir
 
-    desc "watch-compile coffee scripts to js"
+    desc "watch-compile coffee-script to js"
     task :coffee_watch do
         # same as coffee:compile, but also add watch
         exec "coffee -l -w -o dist/compiled -c src/compiled"
     end
-    task :coffee_watch => 'compile:dist_dir'
+    task :coffee_watch => :mk_dist_dir
    
     desc "copy static files to dist"
-    task :html do
+    task :static do
         cp_r Dir.glob("src/static/*"), 'dist/static/'
     end
-    task :html => 'compile:dist_dir'
+    task :static => :mk_dist_dir
 
-    desc "compile haml html template"
+    desc "compile haml to html"
     task :haml do
         Dir.glob('src/*.haml').each do |lf|
             outfile = File.join('dist', 
@@ -83,15 +80,15 @@ namespace "compile" do
             sh "haml -q -f html5 -e #{lf} #{outfile}"
         end
     end
-    task :haml => 'compile:dist_dir'
+    task :haml => :mk_dist_dir
 
-    desc "uglify.js"
+    desc "compress js with uglify.js"
     task :uglify do
         Dir.glob('dist/compiled/*.js').each do |lf|
             sh "uglifyjs --overwrite #{lf}"
         end
     end
-    task :uglify => 'compile:dist_dir'
+    task :uglify => :mk_dist_dir
 end
 
 desc "deploy to production env"
@@ -107,7 +104,7 @@ task :deploy do
     abort "'prod_host_loc' is not set. Not deploying." unless prod_host_loc
     sh "rsync -avzc --delete-after dist/ #{prod_host_loc}"
 end
-task :deploy => ["compile:clean", "compile"]
+task :deploy => [:clean, :compile]
 
 desc "server locally for testing"
 task :serve do
@@ -122,4 +119,4 @@ task :serve do
     puts "Starting server at http://127.0.0.1:8000/"
     s.start
 end
-task :serve => ["compile:clean", "compile"]
+task :serve => [:clean, :compile]

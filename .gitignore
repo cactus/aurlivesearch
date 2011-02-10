@@ -1,2 +1,5 @@
-/dist/
+.DS_Store
+/.bundle
+/.yardoc
 /.config.yml
+/dist/
