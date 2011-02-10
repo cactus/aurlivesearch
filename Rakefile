@@ -113,8 +113,15 @@ task :serve do
     s = HTTPServer.new(
         :Port => 8000,
         :BindAddress => '127.0.0.1',
+        :AccessLog =>  [ [ $stderr, AccessLog::COMMON_LOG_FORMAT ] ],
         :DocumentRoot => 'dist/'
     )
+    # return 404 for favicon
+    s.mount_proc('/favicon.ico') {|req, resp|
+        resp.status = 404
+        resp['Content-Type'] = 'image/png'
+        resp['Cache-Control'] = 'public, max-age=100000000000'
+    }
     trap("INT") { s.shutdown }
     puts "Starting server at http://127.0.0.1:8000/"
     s.start
