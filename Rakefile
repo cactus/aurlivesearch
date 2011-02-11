@@ -74,7 +74,7 @@ namespace "compile" do
         Dir.glob('src/*.haml').each do |lf|
             outfile = File.join('dist', 
                 File.basename(lf).sub('.haml', '.html'))
-            sh "haml -q -f html5 -e #{lf} #{outfile}"
+            sh "haml -r ./lib/haml_helpers -q -f html5 -e #{lf} #{outfile}"
         end
     end
 
