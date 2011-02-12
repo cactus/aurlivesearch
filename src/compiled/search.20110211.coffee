@@ -23,7 +23,7 @@ qurl = 'http://aur.archlinux.org/rpc.php?callback=?'
 
 doajaxy = () ->
     $('#results').empty()
-    $('#footer').empty().hide()
+    $('#errmsg').empty().hide()
     $('#result-count').empty().text(0)
     if $('#q').val().length < 3
         err_msg = { 
@@ -31,16 +31,16 @@ doajaxy = () ->
             long_msg: "must be at least 3 characters" 
         }
         $('#ajax-loading').fadeOut()
-        $('#footer').append(ich.error_tpl(err_msg)).fadeIn()
+        $('#errmsg').append(ich.error_tpl(err_msg)).fadeIn()
         return false
     submit_data = { "type": "search", "arg": $('#q').val() }
     $.getJSON(qurl, submit_data, (data, txtStatus, req) ->
         if !data or data == ""
             err_msg = { short_msg: "No Results" }
-            $('#footer').append(ich.error_tpl(err_msg)).fadeIn()
+            $('#errmsg').append(ich.error_tpl(err_msg)).fadeIn()
         else if data.type == "error"
             err_msg = { short_msg: data.results }
-            $('#footer').append(ich.error_tpl(err_msg)).fadeIn()
+            $('#errmsg').append(ich.error_tpl(err_msg)).fadeIn()
         else
             packages = for index, obj of data.results
                 {pkg: obj}
@@ -60,13 +60,13 @@ setup_ajaxy = () ->
     timeout_len = 500
     $('#searchform form').ajaxError((e, xhr, settings, exception) ->
         $('#results').empty()
-        $('#footer').empty()
+        $('#errmsg').empty()
         $('#ajax-loading').fadeOut()
         err_msg = { 
             short_msg: "Error fetching data", 
             long_msg: exception 
         }
-        $('#footer').append(ich.error_tpl(err_msg)).fadeIn()
+        $('#errmsg').append(ich.error_tpl(err_msg)).fadeIn()
     )
 
     $('#searchform form input').keyup((eventObj) => 
