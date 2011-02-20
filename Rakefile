@@ -31,12 +31,14 @@ task :default => :compile
 
 desc "clean dist dir"
 task :clean do
+    puts "cleaning"
     if File.directory? 'dist'
         rm_rf 'dist'
     end
     if File.exists? 'src/include/search.js'
         rm_rf 'src/include/search.js'
     end
+    puts ""
 end
     
 # no desc, hide from rake -T
@@ -82,15 +84,19 @@ namespace "compile" do
 
     desc "compile coffee-script to js"
     task :coffee => [:mk_dist_dir] do
+        puts "compiling coffee scripts to js"
         ## coffee compiler outputs compiled js in same location as src
         sh "coffee -l -c src/include"
+        puts ""
     end
     
     desc "compress js with uglify.js"
     task :uglify => [:mk_dist_dir] do
+        puts "compressing javascript files"
         Dir.glob('src/include/*.js').each do |lf|
             sh "uglifyjs --overwrite #{lf}"
         end
+        puts ""
     end
     task :uglify => "compile:coffee"
 end
