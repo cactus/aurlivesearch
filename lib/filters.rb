@@ -1,12 +1,5 @@
 require 'haml'
 
-module Haml::Helpers
-    def get_version
-        @@livesearchversion ||= File.read('VERSION').strip
-        @@livesearchversion
-    end
-end
-
 module Haml::Filters::Coffee
     include Haml::Filters::Base
     lazy_require 'coffee_script'

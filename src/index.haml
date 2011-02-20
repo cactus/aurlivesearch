@@ -40,7 +40,7 @@
         #ajax-loading.span-1.last
       #links.span-9.last
         .quiet
-          v.#{get_version} &rsaquo;
+          v.#{AURSEARCHVER} &rsaquo;
           %a(href="https://github.com/cactus/aurlivesearch") about
       %hr.space
       #response.span-24.last
@@ -62,4 +62,4 @@
             type="text/javascript")
     %script(src="/static/ICanHaz.min.js" type="text/javascript")
     :coffee
-      #{File.read('src/compiled/search.coffee')}
+      #{File.read('src/include/search.coffee')}
