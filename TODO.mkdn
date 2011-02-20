@@ -1,7 +1,0 @@
-TODO
-====
-
-*   incorporate [ruby-uglifierjs][1] once they remove the hard requirement for
-    rubyracer. hopefully it ends up more like ruby-coffee-script.
-
-[1]: https://github.com/lautis/uglifier
