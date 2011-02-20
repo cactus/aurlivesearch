@@ -3,3 +3,4 @@
 /.yardoc
 /.config.yml
 /dist/
+/src/include/search.js

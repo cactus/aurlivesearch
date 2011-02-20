@@ -34,6 +34,9 @@ task :clean do
     if File.directory? 'dist'
         rm_rf 'dist'
     end
+    if File.exists? 'src/include/search.js'
+        rm_rf 'src/include/search.js'
+    end
 end
     
 # no desc, hide from rake -T
@@ -41,9 +44,6 @@ task :mk_dist_dir do
     if not File.directory? 'dist/static'
         mkdir_p "dist/static"
     end
-    #if not File.directory? 'dist/compiled'
-    #    mkdir_p "dist/compiled"
-    #end
 end
 
 ###
@@ -78,25 +78,21 @@ namespace "compile" do
         }
         puts ""
     end
+    task :haml => "compile:uglify"
 
-    #desc "compile coffee-script to js"
-    #task :coffee => [:mk_dist_dir] do
-    #    ## coffee compiler outputs compiled js in same location as src
-    #    sh "coffee -l -o dist/compiled -c src/compiled"
-    #end
-    #
-    #desc "watch-compile coffee-script to js"
-    #task :coffee_watch => [:mk_dist_dir] do
-    #    # same as coffee:compile, but also add watch
-    #    exec "coffee -l -w -o dist/compiled -c src/compiled"
-    #end
-    #
-    #desc "compress js with uglify.js"
-    #task :uglify => [:mk_dist_dir] do
-    #    Dir.glob('dist/compiled/*.js').each do |lf|
-    #        sh "uglifyjs --overwrite #{lf}"
-    #    end
-    #end
+    desc "compile coffee-script to js"
+    task :coffee => [:mk_dist_dir] do
+        ## coffee compiler outputs compiled js in same location as src
+        sh "coffee -l -c src/include"
+    end
+    
+    desc "compress js with uglify.js"
+    task :uglify => [:mk_dist_dir] do
+        Dir.glob('src/include/*.js').each do |lf|
+            sh "uglifyjs --overwrite #{lf}"
+        end
+    end
+    task :uglify => "compile:coffee"
 end
 
 desc "deploy to production env"
