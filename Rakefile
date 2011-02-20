@@ -71,10 +71,21 @@ namespace "compile" do
 
     desc "compile haml to html"
     task :haml => [:mk_dist_dir] do
+        require 'haml'
+        require './lib/lib'
+        options = {
+            :format => :html5,
+            :escape_html => true,
+            :attr_wrapper => %q{"}
+        }
+        
         Dir.glob('src/*.haml').each do |lf|
             outfile = File.join('dist', 
                 File.basename(lf).sub('.haml', '.html'))
-            sh "haml -r ./lib/haml_helpers -q -f html5 -e #{lf} #{outfile}"
+            File.open(outfile, 'w') { |f|
+                haml_engine = Haml::Engine.new(File.read(lf), options)
+                f.write(haml_engine.render)
+            }
         end
     end
 
