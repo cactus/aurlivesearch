@@ -29,6 +29,7 @@ window.onhashchange = () ->
         return false
     $('#q').val(hash)
     $('#searchform form input').focus()
+    $('#ajax-loading').fadeIn()
     handleinput(false)
 
 cleardash = () ->
