@@ -110,6 +110,7 @@ $(document).ready(->
     hash = gethash()
     if hash
         $('#q').empty().val(hash)
+        $('#ajax-loading').fadeIn()
         handleinput(false)
     $('#searchform form input').focus()
 )
