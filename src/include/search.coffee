@@ -21,11 +21,32 @@
 
 qurl = 'http://aur.archlinux.org/rpc.php?callback=?'
 
-doajaxy = () ->
+window.onhashchange = () ->
+    hash = gethash()
+    if !hash or hash.length == 0
+        cleardash()
+        $('#q').val('')
+        return false
+    $('#q').val(hash)
+    $('#searchform form input').focus()
+    handleinput(false)
+
+cleardash = () ->
     $('#results').empty()
     $('#errmsg').empty().hide()
     $('#result-count').empty().text(0)
-    if $('#q').val().length < 3
+
+gethash = () ->
+    hash = location.hash.replace(/^#/, '') || null
+    return hash
+
+sethash = (hash) ->
+    location.hash = hash
+
+handleinput = (stateupdate = true) ->
+    cleardash()
+    qval = $('#q').val()
+    if qval.length < 3
         err_msg = { 
             short_msg: "query too short", 
             long_msg: "must be at least 3 characters" 
@@ -33,7 +54,12 @@ doajaxy = () ->
         $('#ajax-loading').fadeOut()
         $('#errmsg').append(ich.error_tpl(err_msg)).fadeIn()
         return false
-    submit_data = { "type": "search", "arg": $('#q').val() }
+    doajaxy(qval)
+    if stateupdate == true
+        sethash(qval)
+
+doajaxy = (searchterm) ->
+    submit_data = { "type": "search", "arg": searchterm }
     $.getJSON(qurl, submit_data, (data, txtStatus, req) ->
         if !data or data == ""
             err_msg = { short_msg: "No Results" }
@@ -59,8 +85,7 @@ ajaxy_firing_pin = (callable, delay) =>
 setup_ajaxy = () ->
     timeout_len = 500
     $('#searchform form').ajaxError((e, xhr, settings, exception) ->
-        $('#results').empty()
-        $('#errmsg').empty()
+        cleardash()
         $('#ajax-loading').fadeOut()
         err_msg = { 
             short_msg: "Error fetching data", 
@@ -73,13 +98,17 @@ setup_ajaxy = () ->
         # only fire event if content length has changed
         @oldlen or= 0
         newlen = eventObj.target.value.length
-        if newlen != @oldlen
+        if (newlen != @oldlen) and (eventObj.target.value != gethash())
             @oldlen = newlen
-            ajaxy_firing_pin(doajaxy, timeout_len)
+            ajaxy_firing_pin(handleinput, timeout_len)
     )
 
 $(document).ready(->
     $('#searchform form').submit(-> false)
     setup_ajaxy();
+    hash = gethash()
+    if hash
+        $('#q').empty().val(hash)
+        handleinput(false)
     $('#searchform form input').focus()
 )
