@@ -20,12 +20,22 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 qurl = 'http://aur.archlinux.org/rpc.php?callback=?'
+# global 'current query term' state. eww! :(
+# used as a guard against double-update execution
+nterm = ''
 
 window.onhashchange = () ->
     hash = gethash()
     if !hash or hash.length == 0
         cleardash()
         $('#q').val('')
+        return false
+    # test hash against nterm.
+    # if they are equal, then this was just a hash update from
+    # the user entering text into the textbox, and not through
+    # navigation (back/forward). Without this handleinput gets
+    # called twice on user input -- which is bad.
+    if hash == nterm
         return false
     $('#q').val(hash)
     $('#searchform form input').focus()
@@ -42,6 +52,9 @@ gethash = () ->
     return hash
 
 sethash = (hash) ->
+    # set nterm (global state guard) to prevent double update
+    # due to setting the hash after user textbox input
+    nterm = hash
     location.hash = hash
 
 handleinput = (stateupdate = true) ->
