@@ -43,7 +43,12 @@ window.onhashchange = () ->
     handleinput(false)
 
 cleardash = () ->
-    $('#results').empty()
+    # empty is very slow, because it recursively removes bindings
+    # and any jquery data. Since no jquery 'data' is being added to any
+    # of the #result content, using innerHTML is fine (and LOTS faster).
+    # this becomes apparent for large query sets
+    #$('#results').empty()
+    $('#results').html('')
     $('#errmsg').empty().hide()
     $('#result-count').empty().text(0)
 
