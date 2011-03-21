@@ -93,7 +93,7 @@ namespace "compile" do
     desc "compress js with uglify.js"
     task :uglify => [:mk_dist_dir] do
         puts "compressing javascript files"
-        Dir.glob('src/include/*.js').each do |lf|
+        FileList['src/include/search.js'].each do |lf|
             sh "uglifyjs --overwrite #{lf}"
         end
         puts ""
