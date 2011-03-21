@@ -86,7 +86,7 @@ namespace "compile" do
     task :coffee => [:mk_dist_dir] do
         puts "compiling coffee scripts to js"
         ## coffee compiler outputs compiled js in same location as src
-        sh "coffee -l -c src/include"
+        sh "coffee -b -l -c src/include"
         puts ""
     end
     
