@@ -109,15 +109,11 @@ task :deploy, [:dry_run] => [:clean, :compile] do |t, args|
         #try to read from file
         conf = File.read('.config.yml')
         prod_host_loc = YAML.load(conf)['prod_host_loc']
-        static_vhost = YAML.load(conf)['static_vhost']
     else
         #try to read from env
         prod_host_loc = ENV['PROD_HOST_LOC']
     end
     abort "'prod_host_loc' is not set. Not deploying." unless prod_host_loc
-    if static_vhost
-        sh "sed -i '' 's#/static#http://#{static_vhost}#g' dist/index.html"
-    end
     sh "rsync #{rsync_extra_args} -avzc --delete-after dist/ #{prod_host_loc}"
 end
 
