@@ -61,6 +61,8 @@
       #errmsg.error.span-24.last
     %script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" 
             type="text/javascript")
-    %script(src="/static/ICanHaz.min.js" type="text/javascript")
     :javascript
+      // ICanHaz.min.js
+      #{File.read('src/include/ICanHaz.min.js')}
+      // search.js
       #{File.read('src/include/search.js')}
