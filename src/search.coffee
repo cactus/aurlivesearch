@@ -1,5 +1,5 @@
 # Copyright (c) 2011 github.com/cactus
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -7,10 +7,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 qurl = 'http://aur.archlinux.org/rpc.php?callback=?'
+
 # global 'current query term' state. eww! :(
 # used as a guard against double-update execution
 nterm = ''
@@ -37,6 +38,7 @@ window.onhashchange = () ->
     # called twice on user input -- which is bad.
     if hash == nterm
         return false
+    nterm = hash
     $('#q').val(hash)
     $('#searchform form input').focus()
     $('#ajax-loading').fadeIn()
@@ -66,10 +68,9 @@ handleinput = (stateupdate = true) ->
     cleardash()
     qval = $('#q').val()
     if qval.length < 3
-        err_msg = { 
-            short_msg: "query too short", 
-            long_msg: "must be at least 3 characters" 
-        }
+        err_msg =
+            short_msg: "query too short",
+            long_msg: "must be at least 3 characters"
         $('#ajax-loading').fadeOut()
         $('#errmsg').append(ich.error_tpl(err_msg)).fadeIn()
         return false
@@ -98,6 +99,12 @@ doajaxy = (searchterm) ->
 ajaxy_firing_pin = (callable, delay) =>
     $('#ajax-loading').fadeIn()
     # only fire callable once every X timeperiod
+    # note. in some cases the end user can cause a race condition
+    # whereby input of one character difference is not fired upon.
+    # I have not discerned why, but my hypothesis is that this section
+    # here can become a race condition if more than one update event
+    # fires too closely together, thus terminating the timer until 
+    # more than one character is entered.
     clearTimeout(@ajaxy_timeout)
     @ajaxy_timeout = setTimeout(callable, delay)
 
@@ -106,14 +113,13 @@ setup_ajaxy = () ->
     $('#searchform form').ajaxError((e, xhr, settings, exception) ->
         cleardash()
         $('#ajax-loading').fadeOut()
-        err_msg = { 
-            short_msg: "Error fetching data", 
-            long_msg: exception 
-        }
+        err_msg =
+            short_msg: "Error fetching data",
+            long_msg: exception
         $('#errmsg').append(ich.error_tpl(err_msg)).fadeIn()
     )
 
-    $('#searchform form input').keyup((eventObj) => 
+    $('#searchform form input').keyup((eventObj) =>
         # only fire event if content length has changed
         @oldlen or= 0
         newlen = eventObj.target.value.length
@@ -124,7 +130,7 @@ setup_ajaxy = () ->
 
 $(document).ready(->
     $('#searchform form').submit(-> false)
-    setup_ajaxy();
+    setup_ajaxy()
     hash = gethash()
     if hash
         $('#q').empty().val(hash)

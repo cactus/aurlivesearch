@@ -6,17 +6,17 @@ aurlivesearch is an ajaxy live-search implementation for the [aur-rpc][1] api.
 
 aurlivesearch uses the following to generate the site:
 
--   ruby
-    -   rake  
-        This is used to automate building and deploying.
-    -   [haml][5]  
-        This is used to compile the html.
 -   [coffeescript][3]  
     This is used to compile from coffeescript to javascript during building.
 -   [uglifyjs][4]  
     This is used to compress the javascript during building.
 
-aurlivesearch includes the following (bundled) as runtime dependencies:
+It is recommended to install nodejs and npm, then simply:
+
+    npm install coffee-script 
+    npm install uglify-js
+
+aurlivesearch includes the following as runtime dependencies:
 
 -   [jQuery][8]  
     Javascript library.
@@ -24,6 +24,8 @@ aurlivesearch includes the following (bundled) as runtime dependencies:
     Javascript templating language that utilizes [mustache.js][7].
 -   [Blueprint.css][17]  
     CSS Template
+
+The above runtime dependencies are already bundled.
 
 # License
 

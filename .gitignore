@@ -2,5 +2,6 @@
 /.bundle
 /.yardoc
 /.config.yml
+/config.json
 /dist/
 /src/include/search.js
