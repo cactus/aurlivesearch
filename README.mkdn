@@ -12,11 +12,14 @@ aurlivesearch uses the following to generate the site:
     This is used to compile from coffeescript to javascript during building.
 -   [uglifyjs][4]  
     This is used to compress the javascript during building.
+-   [jade][20]  
+    This is used as a template language for generating html.
 
 It is recommended to install [nodejs][18] and [npm][19], then simply:
 
     npm install coffee-script 
     npm install uglify-js
+    npm install jade
 
 aurlivesearch includes the following as runtime dependencies:
 
@@ -47,12 +50,12 @@ Directly Linked/Included libraries:
 
 Used as compilers:
 
--   haml:  
-    [MIT License][12]
 -   coffee-script:  
     [MIT License][13]
 -   UglifyJS:  
     [BSD License][14]
+-   jade
+    [MIT License][21]
 
 
 [1]: http://aur.archlinux.org/rpc.php
@@ -72,4 +75,6 @@ Used as compilers:
 [16]: https://github.com/joshuaclayton/blueprint-css/blob/master/LICENSE
 [17]: http://www.blueprintcss.org/
 [18]: http://www.nodejs.org/
-[19]: http://npmjs.org/ 
+[19]: http://npmjs.org/
+[20]: http://jade-lang.com/
+[21]: https://github.com/visionmedia/jade/blob/master/LICENSE
