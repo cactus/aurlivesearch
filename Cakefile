@@ -93,10 +93,3 @@ task 'deploy', 'deploy to prod -- read config.json for prod config', (options) -
         log stderr, red
         log stdout, green
 
-task 'main', 'Main task. Does everything', ->
-    invoke 'clean'
-    invoke 'mkdir'
-    invoke 'copy_files'
-    invoke 'compile'
-    invoke 'deploy'
-
