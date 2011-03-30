@@ -6,12 +6,14 @@ aurlivesearch is an ajaxy live-search implementation for the [aur-rpc][1] api.
 
 aurlivesearch uses the following to generate the site:
 
+-   [nodejs][18]  
+    This is a requirement for coffeescript and uglifyjs.
 -   [coffeescript][3]  
     This is used to compile from coffeescript to javascript during building.
 -   [uglifyjs][4]  
     This is used to compress the javascript during building.
 
-It is recommended to install nodejs and npm, then simply:
+It is recommended to install [nodejs][18] and [npm][19], then simply:
 
     npm install coffee-script 
     npm install uglify-js
@@ -69,3 +71,5 @@ Used as compilers:
 [15]: https://github.com/andyet/ICanHaz.js/blob/master/LICENSE
 [16]: https://github.com/joshuaclayton/blueprint-css/blob/master/LICENSE
 [17]: http://www.blueprintcss.org/
+[18]: http://www.nodejs.org/
+[19]: http://npmjs.org/ 
