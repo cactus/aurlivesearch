@@ -54,7 +54,7 @@ Used as compilers:
     [MIT License][13]
 -   UglifyJS:  
     [BSD License][14]
--   jade
+-   jade:  
     [MIT License][21]
 
 
