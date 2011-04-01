@@ -36,17 +36,6 @@ uglifycoffee = (str) ->
     js = uglifyjs.uglify.gen_code(ast)
     js.trim()
 
-# ANSI Terminal Colors.
-bold  = "\033[0;1m"
-red   = "\033[0;31m"
-green = "\033[0;32m"
-reset = "\033[0m"
-
-# Log a message with a color.
-log = (message, color, explanation) ->
-  console.log color + message + reset + ' ' + (explanation or '')
-
-
 ## options
 option '-n', '--dry-run', 'dry run for deploy'
 
@@ -89,7 +78,6 @@ task 'deploy', 'deploy to prod -- read config.json for prod config', (options) -
     rsync_extra_args = if options['dry-run'] then '-n' else ''
     exec_str = "rsync #{rsync_extra_args} -avzc --delete-after dist/ #{jdata.prod_host_loc}"
     console.log(exec_str)
-    exec exec_str, (error, stdout, stderr) ->
-        log stderr, red
-        log stdout, green
-
+    rsync_child = exec exec_str
+    rsync_child.stdout.on 'data', (data) -> console.log(data)
+    rsync_child.stderr.on 'data', (data) -> console.log(data)
