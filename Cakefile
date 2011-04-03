@@ -77,8 +77,7 @@ task 'deploy', 'deploy to prod -- read config.json for prod config', (options) -
         console.log('invalid ./config.json')
         process.exit(1)
     rsync_extra_args = if options['dry-run'] then '-n' else ''
-    exec_str = "rsync #{rsync_extra_args} -avzc --delete-after dist/ #{jdata.prod_host_loc} 2>&1"
+    exec_str = "rsync -e 'ssh -S none' #{rsync_extra_args} -avzc --delete-after dist/ #{jdata.prod_host_loc} 2>&1"
     console.log(exec_str)
     rsync_child = exec exec_str
     rsync_child.stdout.on 'data', (data) -> console.log(data.trim())
-    return
