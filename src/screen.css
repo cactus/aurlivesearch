@@ -1,4 +1,5 @@
 .outofdate-1{color:red;}
+td{vertical-align:top;}
 #links{text-align:right;}
 #result-count{font-weight:bold;}
 #errmsg{text-align:center;font-weight:bold;display:none;font-size:larger;padding:0;}
