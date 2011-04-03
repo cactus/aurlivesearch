@@ -17,8 +17,8 @@ html
         td
           a(href="{{URL}}") {{Name}}
         td(class="outofdate-{{OutOfDate}}") {{Version}}
-        td {{NumVotes}}
-        td
+        td.center {{NumVotes}}
+        td.center
           a(href="http://aur.archlinux.org{{URLPath}}") tarball
         td {{Description}}
       {{/pkg}}{{/packages}}
@@ -52,8 +52,8 @@ html
               th ID
               th Name
               th Version
-              th Votes
-              th Tarball
+              th.center Votes
+              th.center Tarball
               th(width="500px") Description
           tbody#results
       noscript

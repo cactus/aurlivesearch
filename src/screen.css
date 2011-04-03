@@ -1,5 +1,6 @@
-.outofdate-1{color:red;}
-td{vertical-align:top;}
+.outofdate-1{color:red;font-weight:bold;}
+table, th, td{vertical-align:top;}
+.center{text-align:center;}
 #links{text-align:right;}
 #result-count{font-weight:bold;}
 #errmsg{text-align:center;font-weight:bold;display:none;font-size:larger;padding:0;}
