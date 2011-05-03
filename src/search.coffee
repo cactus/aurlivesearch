@@ -40,7 +40,8 @@ window.onhashchange = () ->
         return false
     nterm = hash
     $('#q').val(hash)
-    $('#searchform form input').focus()
+    if !Modernizr.input.autofocus
+        $('#searchform form input').focus()
     $('#ajax-loading').fadeIn()
     handleinput(false)
 
@@ -136,5 +137,6 @@ $(document).ready(->
         $('#q').empty().val(hash)
         $('#ajax-loading').fadeIn()
         handleinput(false)
-    $('#searchform form input').focus()
+    if !Modernizr.input.autofocus
+        $('#searchform form input').focus()
 )

@@ -41,7 +41,8 @@ html
         .span-6
           form
             label(for="q") Search 
-              input#q(name="q", tabindex="1", type="text")
+              input#q(name="q", tabindex="1", type="search", 
+                      placeholder="Enter search term", autofocus)
         #ajax-loading.span-1.last
       #links.span-8.last
         .quiet
@@ -68,5 +69,7 @@ html
     script(type="text/javascript")
       // ICanHaz.js
       !{icanhazjs}
+      // modernizr-custom
+      !{modernizrjs}
       // search.coffee
       !{search_coffee}
