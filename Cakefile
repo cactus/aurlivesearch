@@ -26,13 +26,14 @@ coffee = require 'coffee-script'
 uglifyjs = require 'uglify-js'
 
 # helper functions
-uglifycoffee = (str) ->
+mkcoffee = (str) ->
     js = coffee.compile(str, {bare: true})
+    js.trim()
 
-    ## uglify
-    ast = uglifyjs.parser.parse(js)
+mkugly = (str) ->
+    ast = uglifyjs.parser.parse(str)
     ast = uglifyjs.uglify.ast_mangle(ast)
-    ast = uglifyjs.uglify.ast_squeeze(ast)
+    ast = uglifyjs.uglify.ast_squeeze(ast, {show_copyright:false})
     js = uglifyjs.uglify.gen_code(ast)
     js.trim()
 
@@ -48,9 +49,9 @@ task 'compile', 'compile the whole thing', ->
     lc =
       AURSEARCHVER: fs.readFileSync('VERSION', 'utf-8').trim()
       bp_screen_css: fs.readFileSync('static/bp.screen.css', 'utf-8').trim()
-      icanhazjs: fs.readFileSync('src/ICanHaz.min.js', 'utf-8').trim()
+      icanhazjs: mkugly(fs.readFileSync('src/ICanHaz.js', 'utf-8'))
       modernizrjs: fs.readFileSync('src/modernizr.min.js', 'utf-8').trim()
-      search_coffee: uglifycoffee(fs.readFileSync('src/search.coffee', 'utf-8')).trim()
+      search_coffee: mkugly(mkcoffee(fs.readFileSync('src/search.coffee', 'utf-8')))
       inline_css: fs.readFileSync('src/screen.css', 'utf-8').trim()
 
     jade.renderFile('src/index.jade', { locals: lc }, (err, html) ->
