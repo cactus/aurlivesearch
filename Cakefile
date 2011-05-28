@@ -50,6 +50,7 @@ task 'compile', 'compile the whole thing', ->
       AURSEARCHVER: fs.readFileSync('VERSION', 'utf-8').trim()
       bp_screen_css: fs.readFileSync('static/bp.screen.css', 'utf-8').trim()
       icanhazjs: mkugly(fs.readFileSync('src/ICanHaz.js', 'utf-8'))
+      dotimeout: fs.readFileSync('src/jquery.ba-dotimeout.min.js', 'utf-8')
       modernizrjs: fs.readFileSync('src/modernizr.min.js', 'utf-8').trim()
       search_coffee: mkugly(mkcoffee(fs.readFileSync('src/search.coffee', 'utf-8')))
       inline_css: fs.readFileSync('src/screen.css', 'utf-8').trim()

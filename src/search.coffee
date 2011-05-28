@@ -97,20 +97,7 @@ doajaxy = (searchterm) ->
     )
     return false
 
-ajaxy_firing_pin = (callable, delay) =>
-    $('#ajax-loading').fadeIn()
-    # only fire callable once every X timeperiod
-    # note. in some cases the end user can cause a race condition
-    # whereby input of one character difference is not fired upon.
-    # I have not discerned why, but my hypothesis is that this section
-    # here can become a race condition if more than one update event
-    # fires too closely together, thus terminating the timer until 
-    # more than one character is entered.
-    clearTimeout(@ajaxy_timeout)
-    @ajaxy_timeout = setTimeout(callable, delay)
-
 setup_ajaxy = () ->
-    timeout_len = 500
     $('#searchform form').ajaxError((e, xhr, settings, exception) ->
         cleardash()
         $('#ajax-loading').fadeOut()
@@ -121,12 +108,16 @@ setup_ajaxy = () ->
     )
 
     $('#searchform form input').keyup((eventObj) =>
-        # only fire event if content length has changed
-        @oldlen or= 0
-        newlen = eventObj.target.value.length
-        if (newlen != @oldlen) and (eventObj.target.value != gethash())
-            @oldlen = newlen
-            ajaxy_firing_pin(handleinput, timeout_len)
+        # use jquery-dotimeout-plugin for debouncing
+        $(@).doTimeout('typing', 600, () =>
+            # only fire event if content length has changed
+            @oldlen or= 0
+            newlen = eventObj.target.value.length
+            if (newlen != @oldlen) and (eventObj.target.value != gethash())
+                $('#ajax-loading').fadeIn('fast')
+                @oldlen = newlen
+                handleinput()
+        )
     )
 
 $(document).ready(->
