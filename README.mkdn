@@ -25,6 +25,8 @@ aurlivesearch includes the following as runtime dependencies:
 
 -   [jQuery][8]  
     Javascript library.
+-   [jQuery doTimeout][22]  
+    jquery plugin to handle debouncing, interval, and timeouts
 -   [ICanHas.js][6]  
     Javascript templating language that utilizes [mustache.js][7].
 -   [Blueprint.css][17]  
@@ -41,6 +43,8 @@ Directly Linked/Included libraries:
 
 -   jQuery:  
     [MIT License][10]
+-   jQuery-dotimeout:  
+    [MIT License][23]
 -   mustache.js:  
     [MIT License][11]
 -   ICanHaz.js:  
@@ -78,3 +82,5 @@ Used as compilers:
 [19]: http://npmjs.org/
 [20]: http://jade-lang.com/
 [21]: https://github.com/visionmedia/jade/blob/master/LICENSE
+[22]: http://benalman.com/projects/jquery-dotimeout-plugin/
+[23]: https://github.com/cowboy/jquery-dotimeout/blob/master/LICENSE-MIT
