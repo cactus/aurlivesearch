@@ -125,8 +125,8 @@ $(document).ready(->
     setup_ajaxy()
     hash = gethash()
     if hash
-        $('#q').empty().val(hash)
         $('#ajax-loading').fadeIn()
+        $('#q').empty().val(hash)
         handleinput(false)
     if !Modernizr.input.autofocus
         $('#searchform form input').focus()
