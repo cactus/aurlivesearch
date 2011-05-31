@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 fs = require 'fs'
+path = require 'path'
 {exec} = require 'child_process'
 jade = require 'jade'
 coffee = require 'coffee-script'
@@ -42,10 +43,22 @@ option '-n', '--dry-run', 'dry run for deploy'
 
 ## cake tasks
 task 'clean', 'clean dist dir', ->
-    exec 'rm -rf ./dist', (error) ->
-        console.log('could remove ./dist dir') if error?
+    if path.existsSync('./dist/')
+        exec 'rm -rf ./dist/*', (error) ->
+            console.log('could remove ./dist dir contents') if error?
+    else
+        try
+            fs.mkdirSync('./dist', 0755)
+        catch e
+            console.log('"./dist" dir already exists')
+            throw e unless e.code == 'EEXIST'
         
 task 'compile', 'compile the whole thing', ->
+    invoke 'clean'
+    # copy static files
+    exec 'cp -r static/ dist/static/', (error) ->
+        console.log('could not copy files') if error?
+    # build
     lc =
       AURSEARCHVER: fs.readFileSync('VERSION', 'utf-8').trim()
       bp_screen_css: fs.readFileSync('static/bp.screen.css', 'utf-8').trim()
@@ -63,18 +76,8 @@ task 'compile', 'compile the whole thing', ->
         fs.writeFileSync("dist/index.html", html, 'utf-8')
     )
 
-task 'copy_files', 'copy static files into staging dir', ->
-    exec 'cp -r static/ dist/static/', (error) ->
-        console.log('could not copy files') if error?
-
-task 'mkdir', 'create dist directory if it does not exist', ->
-    try
-        fs.mkdirSync('./dist', 0755)
-    catch e
-        console.log('"./dist" dir already exists')
-        throw e unless e.code == 'EEXIST'
-
 task 'deploy', 'deploy to prod -- read config.json for prod config', (options) ->
+    invoke 'compile'
     jdata = JSON.parse(fs.readFileSync('./config.json', 'utf-8'))
     if not jdata.prod_host_loc
         console.log('invalid ./config.json')
