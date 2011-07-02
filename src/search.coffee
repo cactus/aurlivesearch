@@ -42,7 +42,6 @@ window.onhashchange = () ->
     $('#q').val(hash)
     if !Modernizr.input.autofocus
         $('#searchform form input').focus()
-    $('#ajax-loading').fadeIn()
     handleinput(false)
 
 cleardash = () ->
@@ -66,6 +65,7 @@ sethash = (hash) ->
     location.hash = hash
 
 handleinput = (stateupdate = true) ->
+    $('#ajax-loading').fadeIn('fast')
     cleardash()
     qval = $('#q').val()
     if qval.length < 3
@@ -114,7 +114,6 @@ setup_ajaxy = () ->
             @oldlen or= 0
             newlen = eventObj.target.value.length
             if (newlen != @oldlen) and (eventObj.target.value != gethash())
-                $('#ajax-loading').fadeIn('fast')
                 @oldlen = newlen
                 handleinput()
         )
@@ -125,7 +124,6 @@ $(document).ready(->
     setup_ajaxy()
     hash = gethash()
     if hash
-        $('#ajax-loading').fadeIn()
         $('#q').empty().val(hash)
         handleinput(false)
     if !Modernizr.input.autofocus
