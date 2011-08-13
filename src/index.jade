@@ -9,6 +9,9 @@ html
       !{bp_screen_css}
     //if IE
       link(href="/static/bp.ie.css", rel="stylesheet", type="text/css")
+    // dns prefetch
+    link(rel="dns-prefetch", href="//ajax.googleapis.com")
+    link(rel="dns-prefetch", href="//aur.archlinux.org")
     style(type="text/css")
       !{inline_css}
     script#packages_tpl(type="text/html")
